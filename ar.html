@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Manzana A en tu mesa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+<style>
+/* Una sola vista clara (mismo sistema de la presentación): visor a pantalla completa, ficha y leyenda abajo */
+:root{
+  --bg:#f3f2f2;--ink:#201e1d;--soft:#444141;--muted:#7d7979;--line:#d7d3d3;--accent:#ec3013;--paper:#faf9f9;
+  --f:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 12px;border-bottom:2px solid var(--ink)}
+.tag{display:flex;align-items:center;gap:10px;font:600 11px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.tag i{width:12px;height:12px;background:var(--accent);display:inline-block;flex:none}
+header a{font:600 13px var(--f);color:var(--ink);text-decoration:none;border:2px solid var(--ink);padding:7px 12px;white-space:nowrap}
+header a:hover{background:var(--ink);color:var(--bg)}
+main{flex:1;min-height:0;position:relative}
+model-viewer{width:100%;height:100%;background:radial-gradient(circle at 50% 40%,#fff 0%,var(--bg) 70%);--poster-color:transparent;--progress-bar-color:var(--accent)}
+.ar-btn{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+  background:var(--accent);color:#fff;border:0;padding:14px 22px;font:700 16px var(--f);cursor:pointer;box-shadow:0 10px 24px rgba(45,43,43,.25)}
+.ar-btn svg{width:22px;height:22px}
+.ar-btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.no-ar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font:500 13px var(--f);color:var(--soft);background:var(--paper);border:1px solid var(--line);padding:10px 14px;text-align:center;max-width:calc(100% - 32px)}
+.panel{padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));border-top:2px solid var(--ink);background:var(--paper);display:grid;gap:12px}
+.panel h1{font:800 clamp(22px,5vw,30px)/1.05 var(--f);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:0;color:var(--soft);font-size:14px;line-height:1.45;max-width:68ch}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;display:inline-block;flex:none}
+.legend b{font-variant-numeric:tabular-nums}
+.meta{font:500 11px var(--mono);color:var(--muted);letter-spacing:.04em}
+</style>
+
+</head>
+<body>
+<header>
+  <div class="tag"><i></i>Manzanas de Facatativá</div>
+  <a href="./">Ver la presentación</a>
+</header>
+
+<main>
+  <model-viewer id="mv" src="manzana_a.glb" alt="Modelo 3D de la Manzana A de Facatativá: lotes y construcciones coloreadas según su registro catastral"
+    ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" ar-placement="floor"
+    camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="1500" rotation-per-second="12deg"
+    camera-orbit="35deg 58deg 62%" shadow-intensity="1" shadow-softness=".8" exposure="1.05" environment-image="neutral">
+    <button slot="ar-button" class="ar-btn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg>
+      Ver en tu espacio
+    </button>
+  </model-viewer>
+  <div class="no-ar" id="noar" hidden>Para verla sobre tu mesa, abre esta página en el celular.</div>
+</main>
+
+<section class="panel">
+  <h1>La Manzana A, sobre tu mesa</h1>
+  <p>Toca <b>Ver en tu espacio</b>, apunta la cámara a una mesa o al piso y mueve el celular despacio hasta que aparezca la maqueta. Camina alrededor y pellizca para agrandarla.</p>
+  <div class="legend">
+    <span><i style="background:#ec3013"></i>Sin registro catastral <b>5</b></span>
+    <span><i style="background:#ff9783"></i>Más pisos que catastro <b>2</b></span>
+    <span><i style="background:#605d5d"></i>Coincide <b>6</b></span>
+    <span><i style="background:#bab6b6"></i>Menos pisos <b>6</b></span>
+    <span><i style="background:#9b9797"></i>Sin altura medida <b>7</b></span>
+  </div>
+  <p class="meta">Escala 1:400 · 94 lotes · alturas Open Buildings 2023 · base catastral 25269 · Carrera 22B–22C con Calle 14D</p>
+</section>
+
+<script>
+const mv=document.getElementById('mv');
+mv.addEventListener('load',()=>{ if(!mv.canActivateAR){ document.getElementById('noar').hidden=false; const b=mv.querySelector('.ar-btn'); if(b) b.style.display='none'; } });
+</script>
+
+</body>
+</html>
